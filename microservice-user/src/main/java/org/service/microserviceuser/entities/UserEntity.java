@@ -1,5 +1,7 @@
 package org.service.microserviceuser.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
 @Getter
 @Setter
@@ -27,6 +32,8 @@ public class UserEntity {
     @Field(name = "lastname")
     private String lastname;
     @NotBlank
+    @Email
+    @Indexed(unique = true)
     @Field(name = "email")
     private String email;
     @NotBlank

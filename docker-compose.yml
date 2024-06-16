@@ -1,1 +1,37 @@
 version: '3.8'
+
+services:
+  microservice-user:
+    container_name: microservice-user-container
+    image: microservice-user
+    build:
+      context: ./microservice-user
+      dockerfile: Dockerfile
+    ports:
+      - 8090:8090
+    environment:
+      EUREKA_URI: http://eureka-server:8070/eureka/
+    networks:
+      - libraryNetwork
+    depends_on:
+       eureka-server:
+         condition: service_healthy
+  eureka-server:
+    container_name: eureka-server-container
+    image: eureka-server
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - 8070:8070
+    networks:
+      - libraryNetwork
+    healthcheck:
+      test: ["CMD","curl","-f","http://localhost:8070/actuator/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 1
+
+networks:
+  libraryNetwork:
+    driver: bridge
