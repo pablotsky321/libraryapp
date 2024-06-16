@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "Authors")
-public class AutorEntity {
+public class AuthorEntity {
 
     @MongoId(targetType = FieldType.OBJECT_ID)
     private String id;
