@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@Document
+@Document(collection = "Books")
 public class BookEntity {
 
     @MongoId(targetType = FieldType.OBJECT_ID)
