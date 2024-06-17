@@ -42,5 +42,4 @@ public class BookEntity {
     @Field(name = "genres")
     private List<String> genres;
 
-
 }
