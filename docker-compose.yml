@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  microservice-book:
+    container_name: microservice-book-container
+    image: microservice-book
+    build:
+      context: ./microservice-book
+      dockerfile: Dockerfile
+    ports:
+      - 8091:8091
+    environment:
+      EUREKA_URI: http://eureka-server:8070/eureka/
+    networks:
+      - libraryNetwork
+    depends_on:
+       eureka-server:
+         condition: service_healthy
+
   microservice-user:
     container_name: microservice-user-container
     image: microservice-user
@@ -16,6 +32,7 @@ services:
     depends_on:
        eureka-server:
          condition: service_healthy
+
   eureka-server:
     container_name: eureka-server-container
     image: eureka-server

@@ -22,5 +22,9 @@ public interface BookService {
 
     String deleteBook(String id);
 
+    void reduceStock(String id);
+
+    void plusStock(String id);
+
 
 }

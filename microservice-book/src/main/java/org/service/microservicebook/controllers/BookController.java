@@ -140,4 +140,24 @@ public class BookController {
         }
     }
 
+    @PutMapping("/reduceStock/{id}")
+    public ResponseEntity<?> reduceStock(@PathVariable("id") String id){
+        try{
+            bookService.reduceStock(id);
+            return ResponseEntity.ok("Stock reduced");
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/plusStock/{id}")
+    public ResponseEntity<?> plusStock(@PathVariable("id") String id){
+        try{
+            bookService.plusStock(id);
+            return ResponseEntity.ok("Stock reduced");
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

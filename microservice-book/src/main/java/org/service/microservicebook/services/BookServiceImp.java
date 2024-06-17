@@ -101,4 +101,22 @@ public class BookServiceImp implements BookService{
             return "book deleted";
         }
     }
+
+    @Override
+    public void reduceStock(String id) {
+        if(bookRepository.findById(id).isPresent()){
+            BookEntity book = bookRepository.findById(id).get();
+            book.getComercialInformation().setStock(book.getComercialInformation().getStock()-1);
+            bookRepository.save(book);
+        }
+    }
+
+    @Override
+    public void plusStock(String id) {
+        if(bookRepository.findById(id).isPresent()){
+            BookEntity book = bookRepository.findById(id).get();
+            book.getComercialInformation().setStock(book.getComercialInformation().getStock()+1);
+            bookRepository.save(book);
+        }
+    }
 }

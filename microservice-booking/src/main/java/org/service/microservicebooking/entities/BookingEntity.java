@@ -34,5 +34,11 @@ public class BookingEntity {
     private LocalDateTime returnDate;
     @Field(name = "penalty_fee")
     private double penaltyFee;
+    @Field(name = "amount_paid")
+    private double amountpaid;
+    @Field(name = "returned?")
+    private boolean returned;
+    @Field(name = "has_penalty_fee?")
+    private boolean has_penalty_fee;
 
 }
