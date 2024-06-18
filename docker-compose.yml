@@ -20,6 +20,8 @@ services:
         condition: service_healthy
       config-server:
         condition: service_healthy
+    networks:
+      - libraryNetwork
 
   microservice-booking:
     container_name: microservice-booking-container
