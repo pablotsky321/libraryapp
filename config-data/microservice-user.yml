@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://libraryUSER:app@cluster0.z8k6amp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: libraryDB
+      username: libraryUSER
+      password: app
+server:
+  port: 8090
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8070/eureka/}

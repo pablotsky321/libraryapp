@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
-@FeignClient(name = "microservice-user",url="http://localhost:8090")
+@FeignClient(name = "microservice-user",url="${microservices.user}")
 public interface UserClient {
 
-    @GetMapping("/api/v1/user/findById/{id_user}")
+    @GetMapping("/api/user/findById/{id_user}")
     Optional<UserDTO> getUserById(@PathVariable("id_user") String id_user);
 
 }

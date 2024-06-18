@@ -1,6 +1,46 @@
 version: '3.8'
 
 services:
+  api-gateway:
+    container_name: api-gateway-container
+    image: api-gateway
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      MICROSERVICE_USER_URI: http://microservice-user:8090
+      MICROSERVICE_BOOK_URI: http://microservice-book:8091
+      MICROSERVICE_BOOKING_URI: http://microservice-booking:8092
+      EUREKA_URI: http://eureka-server:8070/eureka/
+      CONFIG_SERVER_URI: http://config-server:8888
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  microservice-booking:
+    container_name: microservice-booking-container
+    image: microservice-booking
+    build:
+      context: ./microservice-booking
+      dockerfile: Dockerfile
+    ports:
+      - 8092:8092
+    environment:
+      EUREKA_URI: http://eureka-server:8070/eureka/
+      MICROSERVICE_USER_URI: http://microservice-user:8090
+      MICROSERVICE_BOOK_URI: http://microservice-book:8091
+      CONFIG_SERVER_URI: http://config-server:8888
+    networks:
+      - libraryNetwork
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
   microservice-book:
     container_name: microservice-book-container
     image: microservice-book
@@ -11,11 +51,14 @@ services:
       - 8091:8091
     environment:
       EUREKA_URI: http://eureka-server:8070/eureka/
+      CONFIG_SERVER_URI: http://config-server:8888
     networks:
       - libraryNetwork
     depends_on:
-       eureka-server:
-         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
 
   microservice-user:
     container_name: microservice-user-container
@@ -27,11 +70,14 @@ services:
       - 8090:8090
     environment:
       EUREKA_URI: http://eureka-server:8070/eureka/
+      CONFIG_SERVER_URI: http://config-server:8888
     networks:
       - libraryNetwork
     depends_on:
        eureka-server:
          condition: service_healthy
+       config-server:
+        condition: service_healthy
 
   eureka-server:
     container_name: eureka-server-container
@@ -41,10 +87,31 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8070:8070
+    environment:
+      CONFIG_SERVER_URI: http://config-server:8888
     networks:
       - libraryNetwork
     healthcheck:
       test: ["CMD","curl","-f","http://localhost:8070/actuator/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 1
+    depends_on:
+       config-server:
+         condition: service_healthy
+
+  config-server:
+    container_name: config-server-container
+    image: config-server
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    ports:
+      - 8888:8888
+    networks:
+     - libraryNetwork
+    healthcheck:
+      test: [ "CMD","curl","-f","http://localhost:8888/actuator/health" ]
       interval: 20s
       timeout: 10s
       retries: 1

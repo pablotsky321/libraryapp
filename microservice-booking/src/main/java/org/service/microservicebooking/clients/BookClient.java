@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import java.util.Optional;
 
 
-@FeignClient(name = "microservice-book",url="http://localhost:8091")
+@FeignClient(name = "microservice-book",url="${microservices.book}")
 public interface BookClient {
 
     @GetMapping("/api/book/findBookById/{bookId}")
